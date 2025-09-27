@@ -1,4 +1,4 @@
-Todoist Web — Stored XSS via SVG Upload (CDN Render)
+Todoist Web version 8896— Stored XSS via SVG Upload
 
 Class: Stored XSS (unsafe SVG rendering)
 Where: POST /api/v1/uploads → files.todoist.com → signed *.cloudfront.net
@@ -9,8 +9,6 @@ Summary
 Uploaded SVG files are returned with Content-Type: image/svg+xml and inline disposition from a signed CloudFront URL. No sanitization or CSP sandbox is applied, so embedded JavaScript executes when a user opens the attachment from a Todoist task/comment.
 
 ⸻
-
-Step-by-Step Reproduction
 
 1) Upload malicious SVG
 
