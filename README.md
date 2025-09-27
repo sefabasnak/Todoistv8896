@@ -2,9 +2,9 @@ Todoist App - version 8896— Stored XSS via SVG Upload
 
 **Class:** Stored XSS (unsafe SVG rendering)
 
-**Where:** POST /api/v1/uploads 
+**Where:** /api/v1/uploads 
 
-**Where:** POST /app/task
+**Where:** /app/task
 
 **Tested:** 2025-09 (webapp ~8895–8896)
 
