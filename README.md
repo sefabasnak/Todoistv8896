@@ -100,4 +100,4 @@ Sample signed URL (redacted)
 
 ⸻
 
-```Discovered by Sefa Basnak (@sefabasnak).```
+```Discovered by Sefa Basnak```
