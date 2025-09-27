@@ -19,6 +19,10 @@ Uploaded SVG files are returned with Content-Type: image/svg+xml and inline disp
   <rect width="10" height="10" fill="red"/>
 </svg>
 ```
+
+
+<img width="1676" height="1117" alt="poc-upload" src="https://github.com/user-attachments/assets/6aaab758-6ee5-4d08-9636-044cc58d3e01" />
+
 Request (snippet)
 ```
 POST /api/v1/uploads HTTP/2
@@ -58,7 +62,6 @@ Content-Type: image/svg+xml
 ```
 UI evidence (upload)
 
-<img width="1676" height="1117" alt="poc-upload" src="https://github.com/user-attachments/assets/6aaab758-6ee5-4d08-9636-044cc58d3e01" />
 <img width="1013" height="1022" alt="poc-upload2" src="https://github.com/user-attachments/assets/d8403c7f-b0d1-4f26-a053-508b5ebf3074" />
 
 
