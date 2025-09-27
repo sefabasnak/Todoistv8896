@@ -67,19 +67,19 @@ UI evidence (upload)
 2) Obtain the signed CDN URL
 
 API response (truncated)
-
+```
 {
   "file_url": "https://files.todoist.com/.../by/<uid>/as/file.svg",
   "file_type": "image/svg+xml",
   "upload_state": "completed"
 }
-
+```
 Following redirects yields a signed CloudFront URL that returns:
-
+```
 HTTP/2 200
 content-type: image/svg+xml
 content-disposition: inline; filename*=UTF-8''poc.svg
-
+```
 UI evidence (URL/signed link)
 
 
@@ -92,9 +92,9 @@ Opening the signed URL in a browser executes the embedded JavaScript (prompt/ale
 Execution evidence
 
 Sample signed URL (redacted)
-https://d1ysz50cxb9zwl.cloudfront.net/.../file.svg?Expires=...&Signature=...&Key-Pair-Id=...
+```https://d1ysz50cxb9zwl.cloudfront.net/.../file.svg?Expires=...&Signature=...&Key-Pair-Id=...```
 <img width="1013" height="1022" alt="poc-success" src="https://github.com/user-attachments/assets/e6c3b849-e140-4b90-a746-2d857f687fee" />
 
 ⸻
 
-Discovered by Sefa Basnak (@sefabasnak).
+```Discovered by Sefa Basnak (@sefabasnak).```
